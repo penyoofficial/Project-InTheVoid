@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utility;
 
+/// <summary>
+/// 古希腊掌握玩家代币（分数）机制的神
+/// </summary>
 public class AvatarGettingBonus : MonoBehaviour
 {
     void Start()

@@ -1,6 +1,9 @@
 using UnityEngine;
 using Utility;
 
+/// <summary>
+/// 古希腊掌握玩家进攻机制的神
+/// </summary>
 public class AvatarAttack : MonoBehaviour
 {
     private Rigidbody2D avatar;
@@ -18,21 +21,13 @@ public class AvatarAttack : MonoBehaviour
 
     [SerializeField] private AudioClip 重要战斗背景音乐;
 
-    [SerializeField] private float 普通敌怪检测范围 = 7f;
-
-    [SerializeField] private float 重要敌怪检测范围 = 18f;
-
     void UpdateBGM()
     {
-        bool foundBoss = Game2D.Around(avatar, 重要敌怪检测范围, new string[] { "Boss" }).Length != 0;
-
-        bool foundMonster = Game2D.Around(avatar, 普通敌怪检测范围, new string[] { "Monster" }).Length != 0;
-
-        if (foundBoss)
+        if (Game2D.HasNearbyBoss(avatar))
         {
             背景音乐组件.clip = 重要战斗背景音乐;
         }
-        else if (foundMonster)
+        else if (Game2D.HasNearbyMonster(avatar))
         {
             背景音乐组件.clip = 战斗背景音乐;
         }
@@ -47,13 +42,15 @@ public class AvatarAttack : MonoBehaviour
         }
     }
 
-    [SerializeField] private int 攻击力 = 10;
+    [SerializeField] private int 攻击力 = 15;
+
+    [SerializeField] private float 攻击范围 = 3f;
 
     [SerializeField] private float 攻击冷却 = 0.7f;
 
     private float lastAtkTime;
 
-    [SerializeField] private int 蓄力攻击倍率 = 9;
+    [SerializeField] private int 蓄力攻击倍率 = 3;
 
     [SerializeField] private float 蓄力时间 = 2f;
 
@@ -69,12 +66,12 @@ public class AvatarAttack : MonoBehaviour
         {
             lastAtkTime = Time.time;
 
-            foreach (var hit in Game2D.Around(avatar, 1f, new string[] { "Boss", "Monster" }))
+            foreach (var hit in Game2D.NearbyEntity(avatar, 攻击范围, new string[] { "Boss", "Monster" }))
             {
-                if (hit.TryGetComponent<GenericAI>(out var enemyAI))
+                if (hit.TryGetComponent<AbstractAI>(out var enemyAI))
                 {
                     enemyAI.BeingHurt(攻击力);
-                    enemyAI.BeingKnockedOff(GetKnockbackVectorX(hit, 1f));
+                    enemyAI.BeingKnockedOff(GetKnockbackVectorX(hit, 4f));
                 }
             }
         }
@@ -87,12 +84,12 @@ public class AvatarAttack : MonoBehaviour
 
         if (isCharging && Time.time >= chargeStartTime + 蓄力时间)
         {
-            foreach (var hit in Game2D.Around(avatar, 1f, new string[] { "Boss", "Monster" }))
+            foreach (var hit in Game2D.NearbyEntity(avatar, 攻击范围, new string[] { "Boss", "Monster" }))
             {
-                if (hit.TryGetComponent<GenericAI>(out var enemyAI))
+                if (hit.TryGetComponent<AbstractAI>(out var enemyAI))
                 {
                     enemyAI.BeingHurt(攻击力 * 蓄力攻击倍率);
-                    enemyAI.BeingKnockedOff(GetKnockbackVectorX(hit, 3f));
+                    enemyAI.BeingKnockedOff(GetKnockbackVectorX(hit, 8f));
                 }
             }
             isCharging = false;

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 古希腊掌握玩家运动机制的神
+/// </summary>
 public class AvatarMovement : MonoBehaviour
 {
     private Rigidbody2D avatar;

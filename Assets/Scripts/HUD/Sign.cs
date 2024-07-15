@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 游戏中告示牌的行为
+/// </summary>
 public class Sign : MonoBehaviour
 {
     void Start()
