@@ -1,89 +1,111 @@
-using System;
-using System.Collections;
 using UnityEngine;
+using Utility;
 
 public class AvatarAttack : MonoBehaviour
 {
     private Rigidbody2D avatar;
-    public GameObject projectilePrefab;
-    public Transform firePoint;
 
     void Start()
     {
         avatar = GetComponent<Rigidbody2D>();
     }
 
+    [SerializeField] private AudioSource 背景音乐组件;
+
+    [SerializeField] private AudioClip 常态背景音乐;
+
+    [SerializeField] private AudioClip 战斗背景音乐;
+
+    [SerializeField] private AudioClip 重要战斗背景音乐;
+
+    [SerializeField] private float 普通敌怪检测范围 = 7f;
+
+    [SerializeField] private float 重要敌怪检测范围 = 18f;
+
+    void UpdateBGM()
+    {
+        bool foundBoss = Game2D.Around(avatar, 重要敌怪检测范围, new string[] { "Boss" }).Length != 0;
+
+        bool foundMonster = Game2D.Around(avatar, 普通敌怪检测范围, new string[] { "Monster" }).Length != 0;
+
+        if (foundBoss)
+        {
+            背景音乐组件.clip = 重要战斗背景音乐;
+        }
+        else if (foundMonster)
+        {
+            背景音乐组件.clip = 战斗背景音乐;
+        }
+        else
+        {
+            背景音乐组件.clip = 常态背景音乐;
+        }
+
+        if (!背景音乐组件.isPlaying)
+        {
+            背景音乐组件.Play();
+        }
+    }
+
+    [SerializeField] private int 攻击力 = 10;
+
+    [SerializeField] private float 攻击冷却 = 0.7f;
+
+    private float lastAtkTime;
+
+    [SerializeField] private int 蓄力攻击倍率 = 9;
+
+    [SerializeField] private float 蓄力时间 = 2f;
+
+    private float chargeStartTime;
+
+    private bool isCharging;
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("XboxX"))
-        {
-            DashAttack();
-        }
+        UpdateBGM();
 
-        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("XboxY"))
+        if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.JoystickButton2)) && Time.time >= lastAtkTime + 攻击冷却)
         {
-            RangedAttack();
-        }
+            lastAtkTime = Time.time;
 
-        if (Input.GetKeyDown(KeyCode.Q) || Input.GetAxis("XboxRightTrigger") > 0.5f)
-        {
-            StartCoroutine(MagicAttack());
-        }
-    }
-
-    void DashAttack()
-    {
-        Collider2D[] hitMonsters = Physics2D.OverlapCircleAll(transform.position, 1.0f); // Adjust radius as needed
-        foreach (Collider2D monster in hitMonsters)
-        {
-            if (monster.CompareTag("Monster"))
+            foreach (var hit in Game2D.Around(avatar, 1f, new string[] { "Boss", "Monster" }))
             {
-                monster.GetComponent<Monster>().TakeDamage(10);
-            }
-        }
-    }
-
-    void RangedAttack()
-    {
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        projectile.GetComponent<Rigidbody2D>().velocity = firePoint.right * 10f; // Adjust speed as needed
-    }
-
-    IEnumerator MagicAttack()
-    {
-        yield return new WaitForSeconds(1.0f); // 1 second delay before attack
-
-        GameObject nearestMonster = FindNearestMonster();
-        if (nearestMonster != null)
-        {
-            nearestMonster.GetComponent<Monster>().TakeDamage(20);
-        }
-    }
-
-    GameObject FindNearestMonster()
-    {
-        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-        GameObject nearestMonster = null;
-        float shortestDistance = Mathf.Infinity;
-
-        foreach (GameObject monster in monsters)
-        {
-            float distance = Vector2.Distance(transform.position, monster.transform.position);
-            if (distance < shortestDistance)
-            {
-                shortestDistance = distance;
-                nearestMonster = monster;
+                if (hit.TryGetComponent<GenericAI>(out var enemyAI))
+                {
+                    enemyAI.BeingHurt(攻击力);
+                    enemyAI.BeingKnockedOff(GetKnockbackVectorX(hit, 1f));
+                }
             }
         }
 
-        return nearestMonster;
-    }
-}
+        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.JoystickButton3))
+        {
+            isCharging = true;
+            chargeStartTime = Time.time;
+        }
 
-internal class Monster
-{
-    internal void TakeDamage(int v)
+        if (isCharging && Time.time >= chargeStartTime + 蓄力时间)
+        {
+            foreach (var hit in Game2D.Around(avatar, 1f, new string[] { "Boss", "Monster" }))
+            {
+                if (hit.TryGetComponent<GenericAI>(out var enemyAI))
+                {
+                    enemyAI.BeingHurt(攻击力 * 蓄力攻击倍率);
+                    enemyAI.BeingKnockedOff(GetKnockbackVectorX(hit, 3f));
+                }
+            }
+            isCharging = false;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Q) || Input.GetKeyUp(KeyCode.JoystickButton3))
+        {
+            isCharging = false;
+        }
+    }
+
+    private float GetKnockbackVectorX(Collider2D enemy, float force)
     {
-        throw new NotImplementedException();
+        return ((enemy.transform.position.x > avatar.transform.position.x) ? Vector2.right : Vector2.left).x * force;
     }
 }

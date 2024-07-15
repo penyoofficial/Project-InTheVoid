@@ -8,14 +8,14 @@
 
 | 按键                                                                                  | 功能                                                                                    |
 | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| <kbd>A</kbd> 或 ![左摇杆](./assets/30px-XboxOne_Left_Stick.png) 左                    | 向左移动                                                                                |
-| <kbd>D</kbd> 或 ![左摇杆](./assets/30px-XboxOne_Left_Stick.png) 右                    | 向右移动                                                                                |
-| 左 <kbd>Shift</kbd> 或 ![左摇杆](./assets/30px-XboxOne_Left_Stick.png) 下按           | 短暂疾跑                                                                                |
-| <kbd>Space</kbd> 或 ![A](./assets/30px-XboxOne_A.png)                                 | 跳跃。支持二段跳。                                                                      |
-| ![](./assets/40px-Keyboard_Black_Mouse_Left.png) 或 ![X](./assets/30px-XboxOne_X.png) | 普通攻击。无论用户按击多快，都会受到攻速系统的强行阻滞。当附近有 NPC 时，改为与其对话。 |
-| <kbd>Q</kbd> 或 ![Y](./assets/30px-XboxOne_Y.png)                                     | 蓄力重击，并造成明显的击退。在最终造成伤害前，松开都会导致释放失败。                    |
-| <kbd>E</kbd> 或 ![B](./assets/30px-XboxOne_B.png)                                     | 使用技能                                                                                |
-| <kbd>Tab</kbd> 或 ![左肩键](./assets/30px-XboxOne_LT.png)                             | 切换技能                                                                                |
+| <kbd>A</kbd> 或 ![左摇杆](./Assets/30px-XboxOne_Left_Stick.png) 左                    | 向左移动                                                                                |
+| <kbd>D</kbd> 或 ![左摇杆](./Assets/30px-XboxOne_Left_Stick.png) 右                    | 向右移动                                                                                |
+| 左 <kbd>Shift</kbd> 或 ![左摇杆](./Assets/30px-XboxOne_Left_Stick.png) 下按           | 短暂疾跑                                                                                |
+| <kbd>Space</kbd> 或 ![A](./Assets/30px-XboxOne_A.png)                                 | 跳跃。支持二段跳。                                                                      |
+| ![鼠标左键](./Assets/40px-Keyboard_Black_Mouse_Left.png) 或 ![X](./Assets/30px-XboxOne_X.png) | 普通攻击。无论用户按击多快，都会受到攻速系统的强行阻滞。当附近有 NPC 时，改为与其对话。 |
+| <kbd>Q</kbd> 或 ![Y](./Assets/30px-XboxOne_Y.png)                                     | 蓄力重击，并造成明显的击退。在最终造成伤害前，松开都会导致释放失败。                    |
+| <kbd>E</kbd> 或 ![B](./Assets/30px-XboxOne_B.png)                                     | 使用技能                                                                                |
+| <kbd>Tab</kbd> 或 ![左肩键](./Assets/30px-XboxOne_LT.png)                             | 切换技能                                                                                |
 
 ## 技能
 
