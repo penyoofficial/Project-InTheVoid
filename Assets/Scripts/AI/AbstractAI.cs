@@ -20,7 +20,7 @@ public abstract class AbstractAI : MonoBehaviour
     /// </summary>
     private static float difficutyFactor = 0;
 
-    void Start()
+    public void Start()
     {
         aiRB = GetComponent<Rigidbody2D>();
         aiSR = GetComponent<SpriteRenderer>();
@@ -35,7 +35,7 @@ public abstract class AbstractAI : MonoBehaviour
 
     protected int life;
 
-    [SerializeField] private int 初始生命 = 100;
+    [SerializeField] protected int 初始生命 = 100;
 
     [SerializeField] private Slider 血条控件;
 
@@ -65,6 +65,13 @@ public abstract class AbstractAI : MonoBehaviour
         aiRB.velocity = new Vector2(vx, Math.Abs(vx) * 0.33f);
     }
 
+    /// <summary>
+    /// 伤害值
+    /// 
+    /// <para>当玩家接触到 AI 时，将调用它的 Hurt() 方法。该方法会实时计算出本次接触所产生的伤害，
+    /// 有的时候可能是 0，有的时候可能要经过复杂计算得出（如技能期间或特殊效果）。</para>
+    /// </summary>
+    /// <returns>伤害值</returns>
     public virtual int Hurt()
     {
         if (Time.time >= lastAtkTime + 攻击冷却)

@@ -53,10 +53,11 @@ public class AvatarBeingHurt : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D c)
     {
-        if (c.gameObject.CompareTag("Trap"))
+        if (c.gameObject.CompareTag("Trap") || c.gameObject.CompareTag("Attachment"))
         {
             Destroy(c.gameObject);
-            life -= 10;
+            AbstractAI ai = c.GetComponent<AbstractAI>();
+            life -= ai != null ? ai.Hurt() : 10;
             RenderView();
             StartCoroutine(HUD.FlashText(生命值显示));
             PlaySFX(受伤音效);
@@ -77,7 +78,7 @@ public class AvatarBeingHurt : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D c)
     {
-        if (c.gameObject.CompareTag("Monster"))
+        if (c.gameObject.CompareTag("Monster") || c.gameObject.CompareTag("Boss"))
         {
             int hurt = c.GetComponent<AbstractAI>().Hurt();
             if (hurt > 0)

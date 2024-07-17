@@ -21,11 +21,14 @@ public class AvatarAttack : MonoBehaviour
 
     [SerializeField] private AudioClip 重要战斗背景音乐;
 
+    private bool isBossAlive = false;
+
     void UpdateBGM()
     {
-        if (Game2D.HasNearbyBoss(avatar))
+        if (Game2D.HasNearbyBoss(avatar) || isBossAlive)
         {
             背景音乐组件.clip = 重要战斗背景音乐;
+            isBossAlive = true;
         }
         else if (Game2D.HasNearbyMonster(avatar))
         {
@@ -40,6 +43,10 @@ public class AvatarAttack : MonoBehaviour
         {
             背景音乐组件.Play();
         }
+    }
+
+    public void KilledBoss() {
+        isBossAlive = false;
     }
 
     [SerializeField] private int 攻击力 = 15;
