@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 239513952}
   - component: {fileID: 239513955}
   - component: {fileID: 239513954}
-  - component: {fileID: 239513956}
+  - component: {fileID: 239513957}
   - component: {fileID: 239513953}
   m_Layer: 5
   m_Name: "\u9000\u51FA\u6E38\u620F"
@@ -368,8 +368,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 239513956}
-        m_TargetAssemblyTypeName: OpeningDelay, Assembly-CSharp
+      - m_Target: {fileID: 239513957}
+        m_TargetAssemblyTypeName: Opening, Assembly-CSharp
         m_MethodName: TeminateGame
         m_Mode: 1
         m_Arguments:
@@ -418,7 +418,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 239513951}
   m_CullTransparentMesh: 1
---- !u!114 &239513956
+--- !u!114 &239513957
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -427,7 +427,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 239513951}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b79bdd88d27a2c4c94b476c2f8aff33, type: 3}
+  m_Script: {fileID: 11500000, guid: 1543343ee3533e54385c8ccf58a5f914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &660581027
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 660581028}
   - component: {fileID: 660581031}
   - component: {fileID: 660581030}
-  - component: {fileID: 660581032}
+  - component: {fileID: 660581033}
   - component: {fileID: 660581029}
   m_Layer: 5
   m_Name: "\u5F00\u59CB\u6E38\u620F"
@@ -514,8 +514,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 660581032}
-        m_TargetAssemblyTypeName: OpeningDelay, Assembly-CSharp
+      - m_Target: {fileID: 660581033}
+        m_TargetAssemblyTypeName: Opening, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
@@ -564,7 +564,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 660581027}
   m_CullTransparentMesh: 1
---- !u!114 &660581032
+--- !u!114 &660581033
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -573,7 +573,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 660581027}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b79bdd88d27a2c4c94b476c2f8aff33, type: 3}
+  m_Script: {fileID: 11500000, guid: 1543343ee3533e54385c8ccf58a5f914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1349484794

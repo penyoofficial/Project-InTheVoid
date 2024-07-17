@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Project In-The-Void.sln"
+    "dotnet.defaultSolution": "Project InTheVoid.sln"
 }
