@@ -33,40 +33,40 @@ using Utility;
 /// </summary>
 public class CorruptedSunflower : Enemy
 {
-    GameObject lockedPlayer;
+    Avatar lockedPlayer;
 
     protected new void Start()
     {
         base.Start();
 
-        _RushAttack = new(this, 10f);
-        _SummonThorn = new(this, 1, 0.1f);
+        _RushAttack = new(this, 10);
+        _SummonThorn = new(this, 1);
     }
 
     protected new void Update()
     {
         base.Update();
 
-        Collider2D[] players = Game2D.NearbyEntities(GetComponent<Rigidbody2D>(), Game2D.BossDetectDistance * 2, new string[] { "Player" });
-        if (players.Length != 0)
+        Collider2D[] players = Game2D.NearbyEntities(GetComponent<Rigidbody2D>(), Game2D.BossDetectDistance * 1.5f, new string[] { "Player" });
+        if (players.Length != 0 || lockedPlayer != null)
         {
             if (lockedPlayer == null)
             {
-                lockedPlayer = players[0].gameObject;
+                lockedPlayer = players[0].gameObject.GetComponent<Avatar>();
             }
 
-            _RushAttack.To(lockedPlayer.GetComponent<Avatar>()).Release();
+            _RushAttack.To(lockedPlayer).Release();
 
             if (life <= lifeLimition * 0.5f)
             {
-                _SummonThorn.To(lockedPlayer.GetComponent<Avatar>()).Release();
+                _SummonThorn.To(lockedPlayer).Release();
             }
         }
     }
 
     protected void OnDestroy()
     {
-        lockedPlayer.GetComponent<Avatar>().KilledBoss();
+        lockedPlayer.KilledBoss();
     }
 
     RushAttack _RushAttack;

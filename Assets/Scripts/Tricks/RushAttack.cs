@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class RushAttack : Trick<CorruptedSunflower>
 {
-    public RushAttack(CorruptedSunflower from, float manaCost, float cdMagnification = 1f) : base(from, manaCost, cdMagnification)
+    public RushAttack(CorruptedSunflower from, float manaCost, float cdMagnification = 1) : base(from, manaCost, cdMagnification)
     {
     }
 

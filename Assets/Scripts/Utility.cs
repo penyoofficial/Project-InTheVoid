@@ -78,7 +78,7 @@ namespace Utility
             return NearbyEnemies(who).Length != 0;
         }
 
-        public static Collider2D[] NearbyBoss(Rigidbody2D who, float radius = 18f)
+        public static Collider2D[] NearbyBoss(Rigidbody2D who, float radius = 18)
         {
             return NearbyEntities(who, radius, new string[] { "Boss" });
         }
@@ -88,7 +88,7 @@ namespace Utility
             return NearbyBoss(who).Length != 0;
         }
 
-        public static Collider2D[] NearbyMonsters(Rigidbody2D who, float radius = 8f)
+        public static Collider2D[] NearbyMonsters(Rigidbody2D who, float radius = 8)
         {
             return NearbyEntities(who, radius, new string[] { "Monster" });
         }

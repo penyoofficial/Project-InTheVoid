@@ -712,7 +712,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 342312540}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: "\u4F20\u9001\u70B9\u96C6\u7FA4"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1334,6 +1334,10 @@ PrefabInstance:
     - target: {fileID: 2644165546950116943, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
       propertyPath: m_Name
       value: "\u4ECB\u7ECD\u4E8C\u6BB5\u8DF3"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644165546950116943, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5828164844490294009, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1988,6 +1992,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u4ECB\u7ECD\u5546\u5E97"
       objectReference: {fileID: 0}
+    - target: {fileID: 2644165546950116943, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5828164844490294009, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -785
@@ -2110,7 +2118,7 @@ GameObject:
   - component: {fileID: 1216510165}
   - component: {fileID: 1216510170}
   - component: {fileID: 1216510169}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: "\u56FA\u5B9E\u677F\u5757"
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -79328,6 +79336,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u4ECB\u7ECD\u9677\u9631"
       objectReference: {fileID: 0}
+    - target: {fileID: 2644165546950116943, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5828164844490294009, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -825
@@ -79435,6 +79447,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u4ECB\u7ECD\u666E\u653B"
       objectReference: {fileID: 0}
+    - target: {fileID: 2644165546950116943, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5828164844490294009, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -805
@@ -79489,7 +79505,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1342501858}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: "\u65B0\u624B\u6307\u5F15"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79632,7 +79648,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1371321471}
   - component: {fileID: 1371321470}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: "\u73AF\u5883"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79714,7 +79730,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1446398860}
   - component: {fileID: 1446398861}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: "\u91CD\u5251"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79818,6 +79834,10 @@ PrefabInstance:
     - target: {fileID: 2644165546950116943, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
       propertyPath: m_Name
       value: "\u4ECB\u7ECD\u798F\u5229"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644165546950116943, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5828164844490294009, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -80299,6 +80319,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u6B22\u8FCE\u7ED3\u675F"
       objectReference: {fileID: 0}
+    - target: {fileID: 2644165546950116943, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5828164844490294009, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -775
@@ -80372,6 +80396,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u4ECB\u7ECD\u731B\u51B2"
       objectReference: {fileID: 0}
+    - target: {fileID: 2644165546950116943, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5828164844490294009, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -795
@@ -80429,7 +80457,7 @@ GameObject:
   - component: {fileID: 1978143303}
   - component: {fileID: 1978143302}
   - component: {fileID: 1978143301}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: "\u5DE8\u77F3"
   m_TagString: Hugestone
   m_Icon: {fileID: 0}
@@ -80897,13 +80925,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f67529adc1b6e446a61fa02ebee8fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeLimition: 10000
+  lifeLimition: 100
   lifeAutoRecoveredPerSec: 0.2
   manaLimition: 100
   manaAutoRecoveryPerSec: 1
   defence: 0
   velocityBase: 5
-  atkBase: 150
+  atkBase: 15
   cdBase: 0.7
   lifeDisplayComponent: {fileID: 216136520}
   manaDisplayComponent: {fileID: 105592415}
@@ -81024,6 +81052,10 @@ PrefabInstance:
     - target: {fileID: 2644165546950116943, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
       propertyPath: m_Name
       value: "\u6B22\u8FCE"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2644165546950116943, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5828164844490294009, guid: b24cd467654e6eb48a91afbdfdb1c3d1, type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
@@ -17,86 +18,88 @@ public class Avatar : Entity
         StartCoroutine(AutoRecover((g) => !Game2D.HasNearbyEnemies(g.GetComponent<Rigidbody2D>()), () => RenderView(false)));
 
         _PlainAttack = new(this);
-        _ChargeAttack = new(this);
+        _ChargeAttack = new(this, 3);
     }
 
     protected void Update()
     {
         if (life <= 0)
         {
-            Destroy(gameObject);
-            SceneManager.LoadScene(3);
+            StartCoroutine(OnDying());
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0))
+        if (!isDying)
         {
-            if (jumpedTime++ < 2)
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0))
             {
-                GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, velocityBase * 2);
+                if (jumpedTime++ < 2)
+                {
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, velocityBase * 2);
+                }
             }
-        }
 
-        if ((Input.GetKeyDown(KeyCode.LeftShift) && GetComponent<Rigidbody2D>().velocity.x != 0) || Input.GetKeyDown(KeyCode.JoystickButton8))
-        {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Sign(GetComponent<Rigidbody2D>().velocity.x) * velocityBase * 2, GetComponent<Rigidbody2D>().velocity.y);
-        }
-
-        float moveInput = Input.GetAxis("Horizontal");
-        if (Mathf.Abs(moveInput) > linearTriggerThreshold)
-        {
-            if (moveInput < 0 && GetComponent<Rigidbody2D>().velocity.x > -velocityBase)
+            if ((Input.GetKeyDown(KeyCode.LeftShift) && GetComponent<Rigidbody2D>().velocity.x != 0) || Input.GetKeyDown(KeyCode.JoystickButton8))
             {
-                GetComponent<Rigidbody2D>().velocity = new Vector2(-velocityBase, GetComponent<Rigidbody2D>().velocity.y);
+                GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Sign(GetComponent<Rigidbody2D>().velocity.x) * velocityBase * 2, GetComponent<Rigidbody2D>().velocity.y);
             }
-            else if (moveInput > 0 && GetComponent<Rigidbody2D>().velocity.x < velocityBase)
+
+            float moveInput = Input.GetAxis("Horizontal");
+            if (Mathf.Abs(moveInput) > linearTriggerThreshold)
             {
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocityBase, GetComponent<Rigidbody2D>().velocity.y);
+                if (moveInput < 0 && GetComponent<Rigidbody2D>().velocity.x > -velocityBase)
+                {
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(-velocityBase, GetComponent<Rigidbody2D>().velocity.y);
+                }
+                else if (moveInput > 0 && GetComponent<Rigidbody2D>().velocity.x < velocityBase)
+                {
+                    GetComponent<Rigidbody2D>().velocity = new Vector2(velocityBase, GetComponent<Rigidbody2D>().velocity.y);
+                }
             }
-        }
 
-        UpdateBGM();
+            UpdateBGM();
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.JoystickButton2))
-        {
-            foreach (var hit in Game2D.NearbyEntities(GetComponent<Rigidbody2D>(), 3f, new string[] { "Boss", "Monster" }))
+            if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.JoystickButton2))
             {
-                _PlainAttack.To(hit.GetComponent<Enemy>()).Release();
+                foreach (var hit in Game2D.NearbyEntities(GetComponent<Rigidbody2D>(), 3f, new string[] { "Boss", "Monster" }))
+                {
+                    _PlainAttack.To(hit.GetComponent<Enemy>()).Release();
+                }
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.JoystickButton3))
-        {
-            isCharging = true;
-            chargeStartTime = Time.time;
-        }
-
-        if (isCharging && Time.time >= chargeStartTime + chargingTime)
-        {
-            foreach (var hit in Game2D.NearbyEntities(GetComponent<Rigidbody2D>(), 3f, new string[] { "Boss", "Monster" }))
+            if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.JoystickButton3))
             {
-                _ChargeAttack.To(hit.GetComponent<Enemy>()).Release();
+                isCharging = true;
+                chargeStartTime = Time.time;
             }
-            isCharging = false;
-        }
 
-        if (Input.GetKeyUp(KeyCode.Q) || Input.GetKeyUp(KeyCode.JoystickButton3))
-        {
-            isCharging = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton1))
-        {
-            switch (trickPointer % 4)
+            if (isCharging && Time.time >= chargeStartTime + chargingTime)
             {
-                default: break;
+                foreach (var hit in Game2D.NearbyEntities(GetComponent<Rigidbody2D>(), 3f, new string[] { "Boss", "Monster" }))
+                {
+                    _ChargeAttack.To(hit.GetComponent<Enemy>()).Release();
+                }
+                isCharging = false;
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.JoystickButton4))
-        {
-            if (++trickPointer % 4 == 0)
+            if (Input.GetKeyUp(KeyCode.Q) || Input.GetKeyUp(KeyCode.JoystickButton3))
             {
-                trickPointer = 0;
+                isCharging = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton1))
+            {
+                switch (trickPointer % 4)
+                {
+                    default: break;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.JoystickButton4))
+            {
+                if (++trickPointer % 4 == 0)
+                {
+                    trickPointer = 0;
+                }
             }
         }
     }
@@ -116,12 +119,12 @@ public class Avatar : Entity
             }
             else if (isRecovery)
             {
-                BeingHealed(10f);
+                BeingHealed(10);
             }
             else if (isTrap)
             {
                 Pinia.Set(PiniaItem.DEATH_REASON, "你试图生吃地雷");
-                BeingHurt(10f);
+                BeingHurt(10);
             }
             Destroy(obj.gameObject);
             RenderView();
@@ -184,17 +187,17 @@ public class Avatar : Entity
         {
             bgmComponent.clip = bgmInKeyFight;
             isBossAlive = true;
-            GetComponent<World>().SetFormatSize(15f);
+            GetComponent<World>().SetFormatSize(11);
         }
         else if (Game2D.HasNearbyMonsters(GetComponent<Rigidbody2D>()))
         {
             bgmComponent.clip = bgmInFight;
-            GetComponent<World>().SetFormatSize(8f);
+            GetComponent<World>().SetFormatSize(8);
         }
         else
         {
             bgmComponent.clip = bgmInPeace;
-            GetComponent<World>().SetFormatSize(5f);
+            GetComponent<World>().SetFormatSize(5);
         }
 
         if (!bgmComponent.isPlaying)
@@ -256,5 +259,15 @@ public class Avatar : Entity
     }
 
     PlainAttack _PlainAttack;
-    PlainAttack _ChargeAttack;
+    ChargeAttack _ChargeAttack;
+
+    bool isDying = false;
+
+    IEnumerator OnDying()
+    {
+        GetComponent<SpriteRenderer>().enabled = false;
+        isDying = true;
+        yield return new WaitForSeconds(5);
+        SceneManager.LoadScene(3);
+    }
 }

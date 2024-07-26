@@ -18,7 +18,7 @@ public class Hyena : Enemy
     {
         if (life <= 0)
         {
-            GetNearestAvatar().GetComponent<World>().RequestSpawn(EntityType.HYENA, spawnPoint, 30f);
+            GetNearestAvatar().GetComponent<World>().RequestSpawn(EntityType.HYENA, spawnPoint, 30);
         }
 
         base.Update();
@@ -34,7 +34,7 @@ public class Hyena : Enemy
 
             if (rb.velocity.Equals(new Vector2(0, 0)))
             {
-                rb.velocity = new Vector2(rb.velocity.x, 5f);
+                rb.velocity = new Vector2(rb.velocity.x, 5);
             }
         }
         else

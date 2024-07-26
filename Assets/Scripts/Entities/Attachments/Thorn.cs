@@ -5,28 +5,17 @@ using UnityEngine;
 /// </summary>
 public class Thorn : Enemy
 {
-    Transform target;
-    float baseSpeed = 5f;
-    float increasedSpeed = 15f;
-    int increasedDamage = 9999;
-    float distanceThreshold = 30f;
-    Vector2 spawnPosition;
+    Avatar target;
+    readonly float baseSpeed = 5;
+    readonly float increasedSpeed = 15;
+    readonly int increasedDamage = 9999;
+    readonly float distanceThreshold = 30;
 
-    new void Start()
+    public void Setup(Avatar target, Vector2 hostSpawnPoint)
     {
-        base.Start();
-    }
+        this.target = target;
 
-    public void Initialize(Vector2 targetPosition, Vector2 spawnPoint)
-    {
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-        spawnPosition = spawnPoint;
-        UpdateSpeedAndDamage(targetPosition);
-    }
-
-    void UpdateSpeedAndDamage(Vector2 targetPosition)
-    {
-        if (Vector2.Distance(targetPosition, spawnPosition) > distanceThreshold)
+        if (Vector2.Distance(target.transform.position, hostSpawnPoint) > distanceThreshold)
         {
             velocityBase = increasedSpeed;
             atkBase = increasedDamage;
@@ -40,9 +29,9 @@ public class Thorn : Enemy
 
     protected new void Update()
     {
-        if (life > 0)
+        if (target != null)
         {
-            TrackTarget();
+            GetComponent<Rigidbody2D>().velocity = (target.transform.position - transform.position).normalized * velocityBase;
         }
     }
 
@@ -53,15 +42,6 @@ public class Thorn : Enemy
         if (entity.gameObject.CompareTag("Player"))
         {
             Destroy(gameObject);
-        }
-    }
-
-    void TrackTarget()
-    {
-        if (target != null)
-        {
-            Vector2 direction = (target.position - transform.position).normalized;
-            GetComponent<Rigidbody2D>().velocity = direction * velocityBase;
         }
     }
 

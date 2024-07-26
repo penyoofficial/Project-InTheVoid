@@ -5,7 +5,7 @@ public class ChargeAttack : PlainAttack
 {
     readonly float chargeMagnification;
 
-    public ChargeAttack(Entity from, float chargeMagnification, float manaCost = 0f, float cdMagnification = 1f) : base(from, manaCost, cdMagnification)
+    public ChargeAttack(Entity from, float chargeMagnification, float manaCost = 0f, float cdMagnification = 1) : base(from, manaCost, cdMagnification)
     {
         this.chargeMagnification = chargeMagnification;
     }
@@ -17,7 +17,7 @@ public class ChargeAttack : PlainAttack
             base.Release();
 
             to.BeingHurt(from.atkBase * chargeMagnification);
-            to.BeingKnockedOff(GetKnockbackVector(6f));
+            to.BeingKnockedOff(GetKnockbackVector(6));
         }
     }
 }

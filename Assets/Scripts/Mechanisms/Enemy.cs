@@ -18,13 +18,14 @@ public abstract class Enemy : Entity
     /// </summary>
     static float difficutyFactor = 0;
 
-    protected Vector2 spawnPoint;
+    public Vector2 spawnPoint;
 
     protected new void Start()
     {
         spawnPoint = transform.position;
-        
+
         life = (int)(lifeLimition * (1 + difficutyFactor));
+        mana = (int)(manaLimition * (1 + difficutyFactor));
         atkBase = (int)(atkBase * (1 + difficutyFactor));
 
         _PlainAttack = new(this);

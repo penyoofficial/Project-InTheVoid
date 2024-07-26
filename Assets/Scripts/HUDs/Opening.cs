@@ -15,7 +15,7 @@ public class Opening : MonoBehaviour
 
     private IEnumerator DelayAndLoadScene()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3);
         SceneManager.LoadScene(1);
     }
 

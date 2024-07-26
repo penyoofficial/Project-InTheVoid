@@ -18,7 +18,7 @@ public class Tortoise : Enemy
     {
         if (life <= 0)
         {
-            GetNearestAvatar().GetComponent<World>().RequestSpawn(EntityType.TORTOISE, spawnPoint, 30f);
+            GetNearestAvatar().GetComponent<World>().RequestSpawn(EntityType.TORTOISE, spawnPoint, 30);
         }
 
         base.Update();
@@ -31,14 +31,14 @@ public class Tortoise : Enemy
         {
             if (rb.velocity.y == 0)
             {
-                rb.velocity = new Vector2(rb.velocity.x, 10f);
+                rb.velocity = new Vector2(rb.velocity.x, 10);
             }
             else
             {
                 if (rb.velocity.y < 0)
                 {
                     rb.position = new Vector2(Mathf.MoveTowards(rb.position.x, hits[0].transform.position.x, velocityBase * 10 * Time.deltaTime), rb.position.y);
-                    rb.velocity = new Vector2(rb.velocity.x, -10f);
+                    rb.velocity = new Vector2(rb.velocity.x, -10);
                 }
             }
         }

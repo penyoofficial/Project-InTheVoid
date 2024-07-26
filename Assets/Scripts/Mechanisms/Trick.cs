@@ -11,9 +11,9 @@ public abstract class Trick<E> where E : Entity
     protected readonly E from;
     readonly float manaCost;
     readonly float cdMagnification;
-    float lastReleaseTime = -5.0f / 0.0f;
+    float lastReleaseTime = -5.0f / 0;
 
-    public Trick(E from, float manaCost, float cdMagnification = 1f)
+    public Trick(E from, float manaCost, float cdMagnification = 1)
     {
         this.from = from;
         this.manaCost = manaCost;

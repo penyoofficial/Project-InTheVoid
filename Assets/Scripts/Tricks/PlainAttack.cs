@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class PlainAttack : Trick<Entity>
 {
-    public PlainAttack(Entity from, float manaCost = 0f, float cdMagnification = 1f) : base(from, manaCost, cdMagnification)
+    public PlainAttack(Entity from, float manaCost = 0f, float cdMagnification = 1) : base(from, manaCost, cdMagnification)
     {
     }
 
@@ -16,7 +16,7 @@ public class PlainAttack : Trick<Entity>
             base.Release();
 
             to.BeingHurt(from.atkBase);
-            to.BeingKnockedOff(GetKnockbackVector(4f));
+            to.BeingKnockedOff(GetKnockbackVector(4));
         }
     }
 
