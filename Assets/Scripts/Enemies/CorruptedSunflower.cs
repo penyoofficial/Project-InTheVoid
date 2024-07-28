@@ -66,7 +66,10 @@ public class CorruptedSunflower : Enemy
 
     protected void OnDestroy()
     {
-        lockedPlayer.KilledBoss();
+        if (lockedPlayer != null)
+        {
+            lockedPlayer.KilledBoss();
+        }
     }
 
     RushAttack _RushAttack;

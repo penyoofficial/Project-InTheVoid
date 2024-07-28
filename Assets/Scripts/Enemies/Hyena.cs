@@ -18,7 +18,7 @@ public class Hyena : Enemy
     {
         if (life <= 0)
         {
-            GetNearestAvatar().GetComponent<World>().RequestSpawn(EntityType.HYENA, spawnPoint, 30);
+            SingletonRegistry.Get(SR.WORLD).GetComponent<World>().RequestSpawn(ElementType.HYENA, spawnPoint, 30);
         }
 
         base.Update();

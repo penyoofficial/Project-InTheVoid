@@ -32,6 +32,11 @@ public abstract class Entity : MonoBehaviour
     {
         float finalDamage = damage - defence;
         life -= finalDamage > 1 ? finalDamage : 1;
+
+        if (life < 0)
+        {
+            life = 0;
+        }
     }
 
     public bool CanCostMana(float cost)

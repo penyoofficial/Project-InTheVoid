@@ -4,10 +4,15 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 /// <summary>
-/// 唯心世界
+/// 世界
 /// </summary>
 public class World : MonoBehaviour
 {
+    protected void Start()
+    {
+        SingletonRegistry.Set(SR.WORLD, gameObject);
+    }
+
     public Tilemap groundTilemap;
 
     IEnumerator Spawn(string type, Vector2 position, float cd, Action<GameObject> initializor = null)
@@ -22,23 +27,9 @@ public class World : MonoBehaviour
     {
         StartCoroutine(Spawn(type, position, cd, initializor));
     }
-
-    protected void Update()
-    {
-        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, formatSize, formatSize > 10 ? Time.deltaTime * 0.5f : Time.deltaTime * 2);
-    }
-
-    public Camera cam;
-
-    float formatSize = 5f;
-
-    public void SetFormatSize(float size)
-    {
-        formatSize = size;
-    }
 }
 
-public class EntityType
+public class ElementType
 {
     public static string HYENA = "鬣狗";
     public static string TORTOISE = "陆龟";

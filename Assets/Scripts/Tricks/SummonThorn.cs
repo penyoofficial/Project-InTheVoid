@@ -13,7 +13,7 @@ public class SummonThorn : Trick<CorruptedSunflower>
             base.Release();
 
             Vector2 playerPosition = to.transform.position;
-            to.GetComponent<World>().RequestSpawn("尖刺", new Vector2(playerPosition.x, playerPosition.y + 20), 0, (e) =>
+            SingletonRegistry.Get(SR.WORLD).GetComponent<World>().RequestSpawn("尖刺", new Vector2(playerPosition.x, playerPosition.y + 20), 0, (e) =>
             {
                 Thorn t = e.GetComponent<Thorn>();
                 t.Setup(to.GetComponent<Avatar>(), from.spawnPoint);

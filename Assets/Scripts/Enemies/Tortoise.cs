@@ -18,7 +18,7 @@ public class Tortoise : Enemy
     {
         if (life <= 0)
         {
-            GetNearestAvatar().GetComponent<World>().RequestSpawn(EntityType.TORTOISE, spawnPoint, 30);
+            SingletonRegistry.Get(SR.WORLD).GetComponent<World>().RequestSpawn(ElementType.TORTOISE, spawnPoint, 30);
         }
 
         base.Update();

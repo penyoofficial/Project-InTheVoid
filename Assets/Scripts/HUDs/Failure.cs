@@ -11,7 +11,7 @@ public class Failure : MonoBehaviour
 
     void Start()
     {
-        string text = Pinia.Get<string>(PiniaItem.DEATH_REASON);
+        string text = PlayerPrefs.GetString("DEATH_REASON");
         if (deathReason != null && text != null)
         {
             deathReason.text = text;

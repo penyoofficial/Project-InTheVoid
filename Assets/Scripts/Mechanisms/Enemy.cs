@@ -37,7 +37,7 @@ public abstract class Enemy : Entity
     {
         if (life <= 0)
         {
-            GetNearestAvatar().GetComponent<World>().RequestSpawn(EntityType.COIN_BAG, transform.position);
+            SingletonRegistry.Get(SR.WORLD).GetComponent<World>().RequestSpawn(ElementType.COIN_BAG, transform.position);
             Destroy(gameObject);
         }
         else if (life < lifeLimition)
@@ -54,7 +54,7 @@ public abstract class Enemy : Entity
     {
         if (entity.gameObject.CompareTag("Player"))
         {
-            Pinia.Set(PiniaItem.DEATH_REASON, GetDeathReason());
+            PlayerPrefs.SetString("DEATH_REASON", GetDeathReason());
             _PlainAttack.To(entity.gameObject.GetComponent<Avatar>()).Release();
         }
     }

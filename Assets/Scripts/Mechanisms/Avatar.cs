@@ -10,12 +10,15 @@ using Utility;
 /// </summary>
 public class Avatar : Entity
 {
+    Coroutine autoRecovery;
+
     protected new void Start()
     {
+        SingletonRegistry.Set(SR.AVATAR, gameObject);
         base.Start();
 
         RenderView(false);
-        StartCoroutine(AutoRecover((g) => !Game2D.HasNearbyEnemies(g.GetComponent<Rigidbody2D>()), () => RenderView(false)));
+        autoRecovery = StartCoroutine(AutoRecover((g) => !Game2D.HasNearbyEnemies(g.GetComponent<Rigidbody2D>()), () => RenderView(false)));
 
         _PlainAttack = new(this);
         _ChargeAttack = new(this, 3);
@@ -56,7 +59,7 @@ public class Avatar : Entity
                 }
             }
 
-            UpdateBGM();
+            UpdateMedia();
 
             if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.JoystickButton2))
             {
@@ -96,10 +99,8 @@ public class Avatar : Entity
 
             if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.JoystickButton4))
             {
-                if (++trickPointer % 4 == 0)
-                {
-                    trickPointer = 0;
-                }
+                isBackpackOn = !isBackpackOn;
+                SingletonRegistry.Get(SR.BACKPACK).SetActive(isBackpackOn);
             }
         }
     }
@@ -123,7 +124,7 @@ public class Avatar : Entity
             }
             else if (isTrap)
             {
-                Pinia.Set(PiniaItem.DEATH_REASON, "你试图生吃地雷");
+                PlayerPrefs.SetString("DEATH_REASON", "你试图生吃地雷");
                 BeingHurt(10);
             }
             Destroy(obj.gameObject);
@@ -134,8 +135,31 @@ public class Avatar : Entity
 
         if (isHellfire)
         {
-            Pinia.Set(PiniaItem.DEATH_REASON, "你尝试在火焰里游泳");
+            PlayerPrefs.SetString("DEATH_REASON", "你尝试在火焰里游泳");
             BeingHurt(life + defence);
+        }
+    }
+
+    protected void OnTriggerStay2D(Collider2D obj)
+    {
+        bool isCrucifix = obj.CompareTag("Crucifix");
+        if (isCrucifix)
+        {
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.JoystickButton7))
+            {
+                isStoreOn = !isStoreOn;
+                SingletonRegistry.Get(SR.STORE).SetActive(isStoreOn);
+            }
+        }
+    }
+
+    protected void OnTriggerExit2D(Collider2D obj)
+    {
+        bool isCrucifix = obj.CompareTag("Crucifix");
+        if (isCrucifix)
+        {
+            isStoreOn = false;
+            SingletonRegistry.Get(SR.STORE).SetActive(isStoreOn);
         }
     }
 
@@ -143,7 +167,7 @@ public class Avatar : Entity
     {
         if (obj.gameObject.CompareTag("Ground"))
         {
-            Tilemap groundTilemap = GetComponent<World>().groundTilemap;
+            Tilemap groundTilemap = SingletonRegistry.Get(SR.WORLD).GetComponent<World>().groundTilemap;
             Vector3Int tilePosition = groundTilemap.WorldToCell(obj.GetContact(0).point);
 
             if (groundTilemap.GetTile(new(tilePosition.x, tilePosition.y + 1, tilePosition.z)) == null)
@@ -181,23 +205,27 @@ public class Avatar : Entity
 
     int trickPointer = 0;
 
-    void UpdateBGM()
+    bool isStoreOn = false;
+    bool isBackpackOn = false;
+
+    void UpdateMedia()
     {
+        AvatarCamera avatarCamera = SingletonRegistry.Get(SR.AVATAR_CAMERA).GetComponent<AvatarCamera>();
         if (Game2D.HasNearbyBoss(GetComponent<Rigidbody2D>()) || isBossAlive)
         {
             bgmComponent.clip = bgmInKeyFight;
             isBossAlive = true;
-            GetComponent<World>().SetFormatSize(11);
+            avatarCamera.SetFormatSize(11);
         }
         else if (Game2D.HasNearbyMonsters(GetComponent<Rigidbody2D>()))
         {
             bgmComponent.clip = bgmInFight;
-            GetComponent<World>().SetFormatSize(8);
+            avatarCamera.SetFormatSize(8);
         }
         else
         {
             bgmComponent.clip = bgmInPeace;
-            GetComponent<World>().SetFormatSize(5);
+            avatarCamera.SetFormatSize(5);
         }
 
         if (!bgmComponent.isPlaying)
@@ -267,6 +295,7 @@ public class Avatar : Entity
     {
         GetComponent<SpriteRenderer>().enabled = false;
         isDying = true;
+        StopCoroutine(autoRecovery);
         yield return new WaitForSeconds(5);
         SceneManager.LoadScene(3);
     }
