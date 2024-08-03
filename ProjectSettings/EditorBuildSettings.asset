@@ -15,7 +15,10 @@ EditorBuildSettings:
     path: Assets/Scenes/InGame/Main.unity
     guid: f1ec48d68d252bf4eb2aa9bd9e027039
   - enabled: 1
-    path: Assets/Scenes/FailMenu.unity
+    path: Assets/Scenes/InGame/Pause.unity
+    guid: c3c32f1ceb5da9042bdccd5080dacf22
+  - enabled: 1
+    path: Assets/Scenes/InGame/Failure.unity
     guid: 112ca1a41a6de054c8bebd4c443117a0
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

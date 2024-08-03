@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utility;
 
 /// <summary>
 /// 实体骨架
@@ -15,6 +14,25 @@ public abstract class Entity : MonoBehaviour
     {
         life = lifeLimition;
         mana = manaLimition;
+    }
+
+    protected bool needDieAtOnce = true;
+
+    protected void Update()
+    {
+        if (GetComponent<Rigidbody2D>().velocityX > 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = false;
+        }
+        else if (GetComponent<Rigidbody2D>().velocityX < 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
+
+        if (life <= 0 && needDieAtOnce)
+        {
+            Destroy(gameObject);
+        }
     }
 
     // ---------------
@@ -133,7 +151,7 @@ public abstract class Entity : MonoBehaviour
         }
 
         effect.Apply(this, duration);
-        StartCoroutine(Async.SetTimeout(effect.Cancel, duration));
+        This.Get<World>(Context.WORLD).SetTimeout(effect.Cancel, duration);
         effects.Add(effect.name, effect);
     }
 }

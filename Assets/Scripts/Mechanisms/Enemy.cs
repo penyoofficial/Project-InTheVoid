@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Utility;
 
 /// <summary>
 /// 敌怪骨架
@@ -22,23 +21,24 @@ public abstract class Enemy : Entity
 
     protected new void Start()
     {
-        spawnPoint = transform.position;
-
-        life = (int)(lifeLimition * (1 + difficutyFactor));
-        mana = (int)(manaLimition * (1 + difficutyFactor));
+        lifeLimition = (int)(lifeLimition * (1 + difficutyFactor));
+        manaLimition = (int)(manaLimition * (1 + difficutyFactor));
         atkBase = (int)(atkBase * (1 + difficutyFactor));
+
+        base.Start();
+
+        spawnPoint = transform.position;
 
         _PlainAttack = new(this);
 
         difficutyFactor += 0.02f;
     }
 
-    protected void Update()
+    protected new void Update()
     {
         if (life <= 0)
         {
-            SingletonRegistry.Get(SR.WORLD).GetComponent<World>().RequestSpawn(ElementType.COIN_BAG, transform.position);
-            Destroy(gameObject);
+            This.Get<World>(Context.WORLD).RequestSpawn(ElementType.COIN_BAG, transform.position);
         }
         else if (life < lifeLimition)
         {
@@ -48,6 +48,8 @@ public abstract class Enemy : Entity
         {
             lifeDisplayComponent.gameObject.SetActive(false);
         }
+
+        base.Update();
     }
 
     protected void OnCollisionStay2D(Collision2D entity)

@@ -7,7 +7,7 @@ public class Store : MonoBehaviour
 {
     protected void Start()
     {
-        SingletonRegistry.Set(SR.STORE, gameObject);
+        This.Set(Context.STORE, gameObject);
         gameObject.SetActive(false);
     }
 }

@@ -1,9 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-using Utility;
 
 /// <summary>
 /// 玩家所操纵的角色
@@ -14,22 +15,27 @@ public class Avatar : Entity
 
     protected new void Start()
     {
-        SingletonRegistry.Set(SR.AVATAR, gameObject);
+        This.Set(Context.AVATAR, gameObject);
         base.Start();
+        needDieAtOnce = false;
 
         RenderView(false);
-        autoRecovery = StartCoroutine(AutoRecover((g) => !Game2D.HasNearbyEnemies(g.GetComponent<Rigidbody2D>()), () => RenderView(false)));
+        autoRecovery = StartCoroutine(AutoRecover((g) => !This.Get<World>(Context.WORLD).HasNearbyEnemies(g), () => RenderView(false)));
 
         _PlainAttack = new(this);
         _ChargeAttack = new(this, 3);
+
+        Load();
     }
 
-    protected void Update()
+    protected new void Update()
     {
         if (life <= 0)
         {
             StartCoroutine(OnDying());
         }
+
+        base.Update();
 
         if (!isDying)
         {
@@ -63,7 +69,7 @@ public class Avatar : Entity
 
             if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.JoystickButton2))
             {
-                foreach (var hit in Game2D.NearbyEntities(GetComponent<Rigidbody2D>(), 3f, new string[] { "Boss", "Monster" }))
+                foreach (var hit in This.Get<World>(Context.WORLD).NearbyEntities(gameObject, 3f))
                 {
                     _PlainAttack.To(hit.GetComponent<Enemy>()).Release();
                 }
@@ -77,7 +83,7 @@ public class Avatar : Entity
 
             if (isCharging && Time.time >= chargeStartTime + chargingTime)
             {
-                foreach (var hit in Game2D.NearbyEntities(GetComponent<Rigidbody2D>(), 3f, new string[] { "Boss", "Monster" }))
+                foreach (var hit in This.Get<World>(Context.WORLD).NearbyEntities(gameObject, 3f))
                 {
                     _ChargeAttack.To(hit.GetComponent<Enemy>()).Release();
                 }
@@ -87,6 +93,18 @@ public class Avatar : Entity
             if (Input.GetKeyUp(KeyCode.Q) || Input.GetKeyUp(KeyCode.JoystickButton3))
             {
                 isCharging = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.JoystickButton7))
+            {
+                if (isSaveAvailable)
+                {
+                    Save();
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                Pause();
             }
 
             if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton1))
@@ -100,7 +118,7 @@ public class Avatar : Entity
             if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.JoystickButton4))
             {
                 isBackpackOn = !isBackpackOn;
-                SingletonRegistry.Get(SR.BACKPACK).SetActive(isBackpackOn);
+                This.Get(Context.BACKPACK).SetActive(isBackpackOn);
             }
         }
     }
@@ -145,11 +163,7 @@ public class Avatar : Entity
         bool isCrucifix = obj.CompareTag("Crucifix");
         if (isCrucifix)
         {
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.JoystickButton7))
-            {
-                isStoreOn = !isStoreOn;
-                SingletonRegistry.Get(SR.STORE).SetActive(isStoreOn);
-            }
+            isSaveAvailable = true;
         }
     }
 
@@ -158,8 +172,7 @@ public class Avatar : Entity
         bool isCrucifix = obj.CompareTag("Crucifix");
         if (isCrucifix)
         {
-            isStoreOn = false;
-            SingletonRegistry.Get(SR.STORE).SetActive(isStoreOn);
+            isSaveAvailable = false;
         }
     }
 
@@ -167,7 +180,7 @@ public class Avatar : Entity
     {
         if (obj.gameObject.CompareTag("Ground"))
         {
-            Tilemap groundTilemap = SingletonRegistry.Get(SR.WORLD).GetComponent<World>().groundTilemap;
+            Tilemap groundTilemap = This.Get<World>(Context.WORLD).groundTilemap;
             Vector3Int tilePosition = groundTilemap.WorldToCell(obj.GetContact(0).point);
 
             if (groundTilemap.GetTile(new(tilePosition.x, tilePosition.y + 1, tilePosition.z)) == null)
@@ -205,19 +218,21 @@ public class Avatar : Entity
 
     int trickPointer = 0;
 
-    bool isStoreOn = false;
+    bool isSaveAvailable = false;
+
+    // bool isStoreOn = false;
     bool isBackpackOn = false;
 
     void UpdateMedia()
     {
-        AvatarCamera avatarCamera = SingletonRegistry.Get(SR.AVATAR_CAMERA).GetComponent<AvatarCamera>();
-        if (Game2D.HasNearbyBoss(GetComponent<Rigidbody2D>()) || isBossAlive)
+        AvatarCamera avatarCamera = This.Get<AvatarCamera>(Context.AVATAR_CAMERA);
+        if (This.Get<World>(Context.WORLD).HasNearbyBoss(gameObject) || isBossAlive)
         {
             bgmComponent.clip = bgmInKeyFight;
             isBossAlive = true;
             avatarCamera.SetFormatSize(11);
         }
-        else if (Game2D.HasNearbyMonsters(GetComponent<Rigidbody2D>()))
+        else if (This.Get<World>(Context.WORLD).HasNearbyMonsters(gameObject))
         {
             bgmComponent.clip = bgmInFight;
             avatarCamera.SetFormatSize(8);
@@ -244,23 +259,33 @@ public class Avatar : Entity
         string lifeLog = $"生命：{(int)life}/{(int)lifeLimition}";
         if (needShining && lifeDisplayComponent.text != lifeLog)
         {
-            StartCoroutine(HUD.FlashText(lifeDisplayComponent));
+            StartCoroutine(FlashText(lifeDisplayComponent));
         }
         lifeDisplayComponent.text = lifeLog;
 
         string manaLog = $"法力：{(int)mana}/{(int)manaLimition}";
         if (needShining && manaDisplayComponent.text != manaLog)
         {
-            StartCoroutine(HUD.FlashText(manaDisplayComponent));
+            StartCoroutine(FlashText(manaDisplayComponent));
         }
         manaDisplayComponent.text = manaLog;
 
         string scoreLog = $"分数：{(int)score}";
         if (needShining && scoreDisplayComponent.text != scoreLog)
         {
-            StartCoroutine(HUD.FlashText(scoreDisplayComponent));
+            StartCoroutine(FlashText(scoreDisplayComponent));
         }
         scoreDisplayComponent.text = scoreLog;
+    }
+
+    IEnumerator FlashText(Text t)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            t.gameObject.SetActive(!t.gameObject.activeSelf);
+            yield return new WaitForSeconds(0.2f);
+        }
+        t.gameObject.SetActive(true);
     }
 
     void PlaySFX(AudioClip c)
@@ -276,6 +301,7 @@ public class Avatar : Entity
 
         RenderView();
         PlaySFX(beingHurtSFX);
+        This.Get<AvatarCamera>(Context.AVATAR_CAMERA).Shake();
     }
 
     public new void BeingHealed(float amount, HealType type = HealType.LIFE)
@@ -289,6 +315,48 @@ public class Avatar : Entity
     PlainAttack _PlainAttack;
     ChargeAttack _ChargeAttack;
 
+    void Load()
+    {
+        if (PauseKVs.Keys.ToArray().Length > 0)
+        {
+            life = (float)PauseKVs["life"];
+            mana = (float)PauseKVs["mana"];
+            score = (float)PauseKVs["score"];
+            transform.position = (Vector3)PauseKVs["position"];
+
+            PauseKVs = new();
+        }
+        else if (PlayerPrefs.HasKey("life"))
+        {
+            life = PlayerPrefs.GetFloat("life");
+            mana = PlayerPrefs.GetFloat("mana");
+            score = PlayerPrefs.GetFloat("score");
+            transform.position = JsonUtility.FromJson<Vector3>(PlayerPrefs.GetString("position"));
+        }
+    }
+
+    static Dictionary<object, object> PauseKVs = new();
+
+    void Pause()
+    {
+        PauseKVs["life"] = life;
+        PauseKVs["mana"] = mana;
+        PauseKVs["score"] = score;
+        PauseKVs["position"] = transform.position;
+
+        SceneManager.LoadScene("Pause");
+    }
+
+    void Save()
+    {
+        PlayerPrefs.SetFloat("life", life);
+        PlayerPrefs.SetFloat("mana", mana);
+        PlayerPrefs.SetFloat("score", score);
+        PlayerPrefs.SetString("position", JsonUtility.ToJson(transform.position));
+
+        This.Get<GlobalNotice>(Context.GLOBAL_NOTICE).Push("保存成功！");
+    }
+
     bool isDying = false;
 
     IEnumerator OnDying()
@@ -296,7 +364,8 @@ public class Avatar : Entity
         GetComponent<SpriteRenderer>().enabled = false;
         isDying = true;
         StopCoroutine(autoRecovery);
+        This.Get<Fader>(Context.FADER).FadeOut(5);
         yield return new WaitForSeconds(5);
-        SceneManager.LoadScene(3);
+        SceneManager.LoadScene("Failure");
     }
 }

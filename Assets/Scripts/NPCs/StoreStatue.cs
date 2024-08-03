@@ -1,9 +1,12 @@
 using UnityEngine;
 
+/// <summary>
+/// 女神像
+/// </summary>
 public class StoreStatue : MonoBehaviour
 {
     protected void Start()
     {
-        SingletonRegistry.Set(SR.STORE_STATUE, gameObject);
+        This.Set(Context.STORE_STATUE, gameObject);
     }
 }

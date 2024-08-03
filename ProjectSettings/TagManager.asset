@@ -14,6 +14,7 @@ TagManager:
   - Hellfire
   - Crucifix
   - Hugestone
+  - Animal
   layers:
   - Default
   - TransparentFX

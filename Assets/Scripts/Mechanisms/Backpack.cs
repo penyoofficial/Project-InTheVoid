@@ -7,7 +7,7 @@ public class Backpack : MonoBehaviour
 {
     protected void Start()
     {
-        SingletonRegistry.Set(SR.BACKPACK, gameObject);
+        This.Set(Context.BACKPACK, gameObject);
         gameObject.SetActive(false);
     }
 }

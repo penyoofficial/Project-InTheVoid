@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
-/// 失败画面的结局
+/// 失败画面
 /// </summary>
 public class Failure : MonoBehaviour
 {
@@ -20,11 +20,11 @@ public class Failure : MonoBehaviour
 
     public void RestartGame()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene("Main");
     }
 
     public void BackToStartMenu()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("StartMenu");
     }
 }

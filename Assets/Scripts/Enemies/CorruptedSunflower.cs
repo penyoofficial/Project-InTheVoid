@@ -1,6 +1,3 @@
-using UnityEngine;
-using Utility;
-
 /// <summary>
 /// 重要敌怪：腐败的向阳花 的人工智能
 /// 
@@ -47,7 +44,7 @@ public class CorruptedSunflower : Enemy
     {
         base.Update();
 
-        Collider2D[] players = Game2D.NearbyEntities(GetComponent<Rigidbody2D>(), Game2D.BossDetectDistance * 1.5f, new string[] { "Player" });
+        Entity[] players = This.Get<World>(Context.WORLD).NearbyEntities(gameObject, World.BossDetectDistance * 1.5f, new string[] { "Player" });
         if (players.Length != 0 || lockedPlayer != null)
         {
             if (lockedPlayer == null)

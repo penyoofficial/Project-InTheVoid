@@ -1,5 +1,4 @@
 using UnityEngine;
-using Utility;
 
 /// <summary>
 /// 普通敌怪：鬣狗 的人工智能
@@ -18,15 +17,14 @@ public class Hyena : Enemy
     {
         if (life <= 0)
         {
-            SingletonRegistry.Get(SR.WORLD).GetComponent<World>().RequestSpawn(ElementType.HYENA, spawnPoint, 30);
+            This.Get<World>(Context.WORLD).RequestSpawn(ElementType.HYENA, spawnPoint, 30);
         }
 
         base.Update();
 
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
 
-        Collider2D[] hits = Game2D.NearbyEntities(rb, Game2D.MonsterDetectDistance, new string[] { "Player" });
+        Entity[] hits = This.Get<World>(Context.WORLD).NearbyEntities(gameObject, World.MonsterDetectDistance, new string[] { "Player" });
         if (hits.Length != 0)
         {
             velocityBase = 2f;
@@ -52,13 +50,6 @@ public class Hyena : Enemy
             {
                 rb.velocity = new Vector2(-velocityBase, rb.velocity.y);
             }
-        }
-
-        movingRight = rb.velocity.x > 0;
-
-        if (movingRight && sr.flipX || !movingRight && !sr.flipX)
-        {
-            sr.flipX = !sr.flipX;
         }
     }
 

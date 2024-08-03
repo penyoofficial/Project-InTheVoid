@@ -1,27 +1,43 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>
-/// 开屏画面的行为
+/// 开屏画面
 /// </summary>
 public class Opening : MonoBehaviour
 {
-    void Start()
+    public bool isButtonContinueGame;
+
+    protected void Start()
     {
         if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
             StartCoroutine(DelayAndLoadScene());
+        }
+
+        if (!PlayerPrefs.HasKey("life") && isButtonContinueGame)
+        {
+            GetComponent<Button>().interactable = false;
+        }
     }
 
-    private IEnumerator DelayAndLoadScene()
+    IEnumerator DelayAndLoadScene()
     {
         yield return new WaitForSeconds(3);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("StartMenu");
     }
 
     public void StartGame()
     {
-        SceneManager.LoadScene(2);
+        PlayerPrefs.DeleteAll();
+        SceneManager.LoadScene("Main");
+    }
+
+    public void ContinueGame()
+    {
+        SceneManager.LoadScene("Main");
     }
 
     public void TeminateGame()
