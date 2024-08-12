@@ -38,6 +38,8 @@ public class CorruptedSunflower : Enemy
 
         _RushAttack = new(this, 10);
         _SummonThorn = new(this, 1);
+
+        flipable = false;
     }
 
     protected new void Update()

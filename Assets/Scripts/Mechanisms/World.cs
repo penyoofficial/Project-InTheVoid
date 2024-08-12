@@ -60,7 +60,7 @@ public class World : MonoBehaviour
             }
         }
 
-        return meets.ToArray();
+        return meets.Where((e) => !e.gameObject.Equals(who)).ToArray();
     }
 
     public Enemy[] NearbyEnemies(GameObject who)

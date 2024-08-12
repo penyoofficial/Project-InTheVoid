@@ -16,17 +16,22 @@ public abstract class Entity : MonoBehaviour
         mana = manaLimition;
     }
 
+    protected bool flipable = true;
+
     protected bool needDieAtOnce = true;
 
     protected void Update()
     {
-        if (GetComponent<Rigidbody2D>().velocityX > 0)
+        if (flipable)
         {
-            GetComponent<SpriteRenderer>().flipX = false;
-        }
-        else if (GetComponent<Rigidbody2D>().velocityX < 0)
-        {
-            GetComponent<SpriteRenderer>().flipX = true;
+            if (GetComponent<Rigidbody2D>().velocityX > 0)
+            {
+                GetComponent<SpriteRenderer>().flipX = false;
+            }
+            else if (GetComponent<Rigidbody2D>().velocityX < 0)
+            {
+                GetComponent<SpriteRenderer>().flipX = true;
+            }
         }
 
         if (life <= 0 && needDieAtOnce)

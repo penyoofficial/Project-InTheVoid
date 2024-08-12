@@ -25,7 +25,13 @@ public class Opening : MonoBehaviour
 
     IEnumerator DelayAndLoadScene()
     {
+        Fader f = GetComponent<Fader>();
+        f.Fade(0);
+        yield return new WaitForSeconds(0.5f);
+        f.UnFade();
         yield return new WaitForSeconds(3);
+        f.Fade();
+        yield return new WaitForSeconds(1);
         SceneManager.LoadScene("StartMenu");
     }
 

@@ -14,30 +14,30 @@ public class Fader : MonoBehaviour
     float duration = 0.1f;
     float to = 1;
 
-    bool hasBeenReady = false;
+    public bool hasBeenReady = false;
 
     protected void Update()
     {
         if (!hasBeenReady)
         {
-            This.Get<World>(Context.WORLD).SetTimeout(() => FadeIn(3), 0.1f);
+            This.Get<World>(Context.WORLD).SetTimeout(() => Fade(3), 0.1f);
             hasBeenReady = true;
         }
 
         Image i = GetComponent<Image>();
 
         Color c = i.color;
-        c.a = Mathf.MoveTowards(c.a, to, Time.deltaTime / duration);
+        c.a = duration > 0 ? Mathf.MoveTowards(c.a, to, Time.deltaTime / duration) : to;
         i.color = c;
     }
 
-    public void FadeIn(float duration)
+    public void Fade(float duration = 1)
     {
         this.duration = duration;
         to = 0;
     }
 
-    public void FadeOut(float duration)
+    public void UnFade(float duration = 1)
     {
         this.duration = duration;
         to = 1;

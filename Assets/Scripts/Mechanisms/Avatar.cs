@@ -85,7 +85,7 @@ public class Avatar : Entity
             {
                 foreach (var hit in This.Get<World>(Context.WORLD).NearbyEntities(gameObject, 3f))
                 {
-                    _ChargeAttack.To(hit.GetComponent<Enemy>()).Release();
+                    _ChargeAttack.To(hit.GetComponent<Entity>()).Release();
                 }
                 isCharging = false;
             }
@@ -103,7 +103,27 @@ public class Avatar : Entity
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (Input.GetKeyDown(KeyCode.Mouse2) || Input.GetKeyDown(KeyCode.JoystickButton9))
+            {
+                if (isSaveAvailable)
+                {
+                    whereToVisitGodness = transform.position;
+                    Vector2 to = This.Get(Context.STORE_STATUE).transform.position;
+                    transform.position = new(to.x, to.y + 5);
+                    isUnderGodness = true;
+                }
+                else if (isUnderGodness)
+                {
+                    transform.position = whereToVisitGodness;
+                    isUnderGodness = false;
+
+                    isStoreOn = false;
+                    This.Get(Context.STORE).SetActive(isStoreOn);
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
                 Pause();
             }
 
@@ -117,8 +137,16 @@ public class Avatar : Entity
 
             if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.JoystickButton4))
             {
-                isBackpackOn = !isBackpackOn;
-                This.Get(Context.BACKPACK).SetActive(isBackpackOn);
+                if (isUnderGodness)
+                {
+                    isStoreOn = !isStoreOn;
+                    This.Get(Context.STORE).SetActive(isStoreOn);
+                }
+                else
+                {
+                    isBackpackOn = !isBackpackOn;
+                    This.Get(Context.BACKPACK).SetActive(isBackpackOn);
+                }
             }
         }
     }
@@ -149,9 +177,7 @@ public class Avatar : Entity
             RenderView();
         }
 
-        bool isHellfire = obj.CompareTag("Hellfire");
-
-        if (isHellfire)
+        if (obj.CompareTag("Hellfire"))
         {
             PlayerPrefs.SetString("DEATH_REASON", "你尝试在火焰里游泳");
             BeingHurt(life + defence);
@@ -160,8 +186,7 @@ public class Avatar : Entity
 
     protected void OnTriggerStay2D(Collider2D obj)
     {
-        bool isCrucifix = obj.CompareTag("Crucifix");
-        if (isCrucifix)
+        if (obj.CompareTag("Crucifix"))
         {
             isSaveAvailable = true;
         }
@@ -169,8 +194,7 @@ public class Avatar : Entity
 
     protected void OnTriggerExit2D(Collider2D obj)
     {
-        bool isCrucifix = obj.CompareTag("Crucifix");
-        if (isCrucifix)
+        if (obj.CompareTag("Crucifix"))
         {
             isSaveAvailable = false;
         }
@@ -219,8 +243,10 @@ public class Avatar : Entity
     int trickPointer = 0;
 
     bool isSaveAvailable = false;
+    bool isUnderGodness = false;
+    Vector2 whereToVisitGodness;
 
-    // bool isStoreOn = false;
+    bool isStoreOn = false;
     bool isBackpackOn = false;
 
     void UpdateMedia()
@@ -364,7 +390,7 @@ public class Avatar : Entity
         GetComponent<SpriteRenderer>().enabled = false;
         isDying = true;
         StopCoroutine(autoRecovery);
-        This.Get<Fader>(Context.FADER).FadeOut(5);
+        This.Get<Fader>(Context.FADER).UnFade(5);
         yield return new WaitForSeconds(5);
         SceneManager.LoadScene("Failure");
     }

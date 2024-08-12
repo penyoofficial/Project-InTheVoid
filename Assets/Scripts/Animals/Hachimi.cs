@@ -21,4 +21,13 @@ public class Hachimi : Entity
         }
         GetComponent<Animator>().SetFloat("lastRunningTime", Time.time - lastRunningTime);
     }
+
+    protected void OnDestroy()
+    {
+        World w = This.Get<World>(Context.WORLD);
+        for (int i = 0; i < 10; i++)
+        {
+            w.RequestSpawn(ElementType.COIN_BAG, transform.position);
+        }
+    }
 }
