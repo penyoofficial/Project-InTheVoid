@@ -30,25 +30,25 @@ public class Hyena : Enemy
             velocityBase = 2f;
             rb.position = Vector2.MoveTowards(rb.position, new Vector2(hits[0].transform.position.x, rb.position.y), velocityBase * Time.deltaTime);
 
-            if (rb.velocity.Equals(new Vector2(0, 0)))
+            if (rb.linearVelocity.Equals(new Vector2(0, 0)))
             {
-                rb.velocity = new Vector2(rb.velocity.x, 5);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 5);
             }
         }
         else
         {
             velocityBase = 1f;
-            if (rb.velocity.x == 0)
+            if (rb.linearVelocity.x == 0)
             {
                 movingRight = !movingRight;
             }
             if (movingRight)
             {
-                rb.velocity = new Vector2(velocityBase, rb.velocity.y);
+                rb.linearVelocity = new Vector2(velocityBase, rb.linearVelocity.y);
             }
             else
             {
-                rb.velocity = new Vector2(-velocityBase, rb.velocity.y);
+                rb.linearVelocity = new Vector2(-velocityBase, rb.linearVelocity.y);
             }
         }
     }

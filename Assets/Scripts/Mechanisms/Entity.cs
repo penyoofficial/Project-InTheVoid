@@ -24,11 +24,11 @@ public abstract class Entity : MonoBehaviour
     {
         if (flipable)
         {
-            if (GetComponent<Rigidbody2D>().velocityX > 0)
+            if (GetComponent<Rigidbody2D>().linearVelocityX > 0)
             {
                 GetComponent<SpriteRenderer>().flipX = false;
             }
-            else if (GetComponent<Rigidbody2D>().velocityX < 0)
+            else if (GetComponent<Rigidbody2D>().linearVelocityX < 0)
             {
                 GetComponent<SpriteRenderer>().flipX = true;
             }

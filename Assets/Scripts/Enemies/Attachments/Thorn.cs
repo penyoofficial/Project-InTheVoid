@@ -31,7 +31,7 @@ public class Thorn : Enemy
     {
         if (target != null)
         {
-            GetComponent<Rigidbody2D>().velocity = (target.transform.position - transform.position).normalized * velocityBase;
+            GetComponent<Rigidbody2D>().linearVelocity = (target.transform.position - transform.position).normalized * velocityBase;
         }
     }
 

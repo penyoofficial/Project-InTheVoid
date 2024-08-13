@@ -43,25 +43,25 @@ public class Avatar : Entity
             {
                 if (jumpedTime++ < 2)
                 {
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, velocityBase * 2);
+                    GetComponent<Rigidbody2D>().linearVelocity = new Vector2(GetComponent<Rigidbody2D>().linearVelocity.x, velocityBase * 2);
                 }
             }
 
-            if ((Input.GetKeyDown(KeyCode.LeftShift) && GetComponent<Rigidbody2D>().velocity.x != 0) || Input.GetKeyDown(KeyCode.JoystickButton8))
+            if ((Input.GetKeyDown(KeyCode.LeftShift) && GetComponent<Rigidbody2D>().linearVelocity.x != 0) || Input.GetKeyDown(KeyCode.JoystickButton8))
             {
-                GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Sign(GetComponent<Rigidbody2D>().velocity.x) * velocityBase * 2, GetComponent<Rigidbody2D>().velocity.y);
+                GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Mathf.Sign(GetComponent<Rigidbody2D>().linearVelocity.x) * velocityBase * 2, GetComponent<Rigidbody2D>().linearVelocity.y);
             }
 
             float moveInput = Input.GetAxis("Horizontal");
             if (Mathf.Abs(moveInput) > linearTriggerThreshold)
             {
-                if (moveInput < 0 && GetComponent<Rigidbody2D>().velocity.x > -velocityBase)
+                if (moveInput < 0 && GetComponent<Rigidbody2D>().linearVelocity.x > -velocityBase)
                 {
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(-velocityBase, GetComponent<Rigidbody2D>().velocity.y);
+                    GetComponent<Rigidbody2D>().linearVelocity = new Vector2(-velocityBase, GetComponent<Rigidbody2D>().linearVelocity.y);
                 }
-                else if (moveInput > 0 && GetComponent<Rigidbody2D>().velocity.x < velocityBase)
+                else if (moveInput > 0 && GetComponent<Rigidbody2D>().linearVelocity.x < velocityBase)
                 {
-                    GetComponent<Rigidbody2D>().velocity = new Vector2(velocityBase, GetComponent<Rigidbody2D>().velocity.y);
+                    GetComponent<Rigidbody2D>().linearVelocity = new Vector2(velocityBase, GetComponent<Rigidbody2D>().linearVelocity.y);
                 }
             }
 

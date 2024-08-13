@@ -13,9 +13,9 @@ public class Hachimi : Entity
 
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
 
-        GetComponent<Animator>().SetFloat("velocityX", Mathf.Abs(rb.velocityX));
+        GetComponent<Animator>().SetFloat("velocityX", Mathf.Abs(rb.linearVelocityX));
 
-        if (!rb.velocity.Equals(Vector2.zero))
+        if (!rb.linearVelocity.Equals(Vector2.zero))
         {
             lastRunningTime = Time.time;
         }

@@ -27,32 +27,32 @@ public class Tortoise : Enemy
         Entity[] hits = This.Get<World>(Context.WORLD).NearbyEntities(gameObject, World.MonsterDetectDistance, new string[] { "Player" });
         if (hits.Length != 0)
         {
-            if (rb.velocity.y == 0)
+            if (rb.linearVelocity.y == 0)
             {
-                rb.velocity = new Vector2(rb.velocity.x, 10);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 10);
             }
             else
             {
-                if (rb.velocity.y < 0)
+                if (rb.linearVelocity.y < 0)
                 {
                     rb.position = new Vector2(Mathf.MoveTowards(rb.position.x, hits[0].transform.position.x, velocityBase * 10 * Time.deltaTime), rb.position.y);
-                    rb.velocity = new Vector2(rb.velocity.x, -10);
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, -10);
                 }
             }
         }
         else
         {
-            if (rb.velocity.x == 0)
+            if (rb.linearVelocity.x == 0)
             {
                 movingRight = !movingRight;
             }
             if (movingRight)
             {
-                rb.velocity = new Vector2(velocityBase, rb.velocity.y);
+                rb.linearVelocity = new Vector2(velocityBase, rb.linearVelocity.y);
             }
             else
             {
-                rb.velocity = new Vector2(-velocityBase, rb.velocity.y);
+                rb.linearVelocity = new Vector2(-velocityBase, rb.linearVelocity.y);
             }
         }
     }
